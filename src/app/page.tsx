@@ -54,8 +54,8 @@ export default function Dashboard() {
   const fetchData = async () => {
     try {
       const [statsRes, invRes] = await Promise.all([
-        axios.get(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/investors/stats`),
-        axios.get(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/investors`)
+        axios.get(`${process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === "production" ? "" : "http://localhost:5000")}/api/investors/stats`),
+        axios.get(`${process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === "production" ? "" : "http://localhost:5000")}/api/investors`)
       ]);
       setStats(statsRes.data);
       setInvestors(invRes.data);
@@ -108,13 +108,13 @@ export default function Dashboard() {
     e.preventDefault();
     try {
       if (editingId) {
-        await axios.put(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/investors/${editingId}`, {
+        await axios.put(`${process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === "production" ? "" : "http://localhost:5000")}/api/investors/${editingId}`, {
           ...formData,
           feesPaid: Number(formData.feesPaid)
         });
         alert("Member updated successfully!");
       } else {
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/investors`, {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === "production" ? "" : "http://localhost:5000")}/api/investors`, {
           ...formData,
           feesPaid: Number(formData.feesPaid)
         });
@@ -146,7 +146,7 @@ export default function Dashboard() {
   const handleDelete = async (id: string) => {
     if (confirm("Delete this member?")) {
       try {
-        await axios.delete(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/investors/${id}`);
+        await axios.delete(`${process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === "production" ? "" : "http://localhost:5000")}/api/investors/${id}`);
         fetchData();
       } catch (err) {
         console.error(err);
@@ -253,7 +253,7 @@ export default function Dashboard() {
       const additionalFees = Number(renewData.additionalFees) || 0;
       const totalFees = oldFees + additionalFees;
 
-      await axios.put(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/investors/${inv._id}`, {
+      await axios.put(`${process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === "production" ? "" : "http://localhost:5000")}/api/investors/${inv._id}`, {
         ...inv,
         expiryDate: newExpiry.toISOString(),
         feesPaid: totalFees,
