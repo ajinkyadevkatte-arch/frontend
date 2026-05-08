@@ -19,7 +19,7 @@ export default function InvestorsPage() {
 
   const fetchInvestors = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/investors");
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/investors`);
       setInvestors(res.data);
     } catch (error) {
       console.error("Failed to fetch investors", error);
@@ -35,7 +35,7 @@ export default function InvestorsPage() {
   const handleDelete = async (id: string) => {
     if (confirm("Are you sure you want to delete this investor?")) {
       try {
-        await axios.delete(`http://localhost:5000/api/investors/${id}`);
+        await axios.delete(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/investors/${id}`);
         fetchInvestors();
       } catch (error) {
         console.error("Failed to delete", error);

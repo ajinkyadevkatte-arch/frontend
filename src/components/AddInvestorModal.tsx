@@ -27,7 +27,7 @@ export function AddInvestorModal({ isOpen, onClose, onAdded }: { isOpen: boolean
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post("http://localhost:5000/api/investors", {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/investors`, {
         ...formData,
         feesPaid: Number(formData.feesPaid)
       });
